@@ -35,7 +35,7 @@ const RegisterPage = () => {
     setPolicyError(false);
     // FormData에 있는 값을 가지고 백엔드로 넘겨주기
     console.log(email,name,password)
-    dispatch(userActions.registerUser({name,email,password}),navigate);
+    dispatch(userActions.registerUser({name,email,password},navigate));
 
     //성공후 로그인 페이지로 넘어가기
   };
