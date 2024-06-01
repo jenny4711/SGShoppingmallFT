@@ -50,7 +50,7 @@ const registerUser =
       navigate("/login");
     } catch (error) {
       console.log(error);
-      dispatch(userActionss.registerUserFail(error.error));
+      dispatch(userActionss.registerUserFail(error.message));
     }
   };
 export const userActions = {
