@@ -3,7 +3,18 @@ import { userActionss } from "../reducer/userReducer";
 import { commonUiActions } from "./commonUiAction";
 
 
-const loginWithToken = () => async (dispatch) => {};
+const loginWithToken = () => async (dispatch) => {
+  try {
+    const response = await api.get("/user/me");
+console.log(response.data.data,'resLoginWithToken')
+    if (response.status !== 200) throw new Error(response.error);
+    dispatch(userActionss.loginTokenSuccess(response.data.data));
+  } catch (error) {
+    dispatch(userActionss.loginWithTokenFail(error));
+
+    dispatch(userActionss.logout());
+  }
+};
 const loginWithEmail =
   ({ email, password }) =>
   async (dispatch) => {
@@ -25,7 +36,14 @@ const loginWithEmail =
       dispatch(commonUiActions.showToastMessage(error.message, "error"));
     }
   };
-const logout = () => async (dispatch) => {};
+const logout = () => async (dispatch) => {
+  try {
+    sessionStorage.removeItem("token");
+    dispatch(userActionss.logout());
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const loginWithGoogle = (token) => async (dispatch) => {};
 
