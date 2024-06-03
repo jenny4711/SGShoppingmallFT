@@ -15,7 +15,7 @@ const AppLayout = ({ children }) => {
 
   const { user } = useSelector((state) => state.user);
 
-  userEffect=(()=>{
+  useEffect=(()=>{
     dispatch(userActions.startCheck())
   },[])
   useEffect(() => {
