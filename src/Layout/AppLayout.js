@@ -15,9 +15,7 @@ const AppLayout = ({ children }) => {
 
   const { user } = useSelector((state) => state.user);
 
-  useEffect=(()=>{
-    dispatch(userActions.startCheck())
-  },[])
+  
   useEffect(() => {
     dispatch(userActions.loginWithToken());
   }, []);
