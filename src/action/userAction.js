@@ -32,11 +32,12 @@ const loginWithEmail =
       );
       
     } catch (error) {
+      console.log(error,'error!')
       dispatch(userActionss.loginFail(error.message));
       dispatch(
         commonUiActions.showToastMessage("로그인을 실패 했습니다!", "error")
       );
-      dispatch(commonUiActions.showToastMessage(error.message, "error"));
+    
     }
   };
 const logout = () => async (dispatch) => {

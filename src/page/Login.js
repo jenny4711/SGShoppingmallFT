@@ -13,7 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const error = useSelector((state) => state.user.error);
-console.log(user,'user')
+console.log(error,'user')
   const loginWithEmail = (event) => {
     event.preventDefault();
     //이메일,패스워드를 가지고 백엔드로 보내기
