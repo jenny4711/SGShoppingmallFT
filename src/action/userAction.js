@@ -71,10 +71,19 @@ const registerUser =
       dispatch(userActionss.registerUserFail(error.message));
     }
   };
+
+const startCheck=()=>async(dispatch)=>{
+  const res = await api.get('/user/check')
+  if(res.status===200){
+   console.log(res.data,'res!!!!!!!!!start check')
+  
+}
+}
 export const userActions = {
   loginWithToken,
   loginWithEmail,
   logout,
   loginWithGoogle,
   registerUser,
+  startCheck
 };

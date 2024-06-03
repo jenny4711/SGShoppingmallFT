@@ -14,6 +14,10 @@ const AppLayout = ({ children }) => {
   // const user = null; // 로그인 기능 만들고 지우기
 
   const { user } = useSelector((state) => state.user);
+
+  userEffect=(()=>{
+    dispatch(userActions.startCheck())
+  },[])
   useEffect(() => {
     dispatch(userActions.loginWithToken());
   }, []);
