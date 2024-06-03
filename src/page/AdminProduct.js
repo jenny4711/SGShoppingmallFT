@@ -20,7 +20,8 @@ const AdminProduct = () => {
     name: query.get("name") || "",
   }); //검색 조건들을 저장하는 객체
 const {productList} = useSelector((state) => state.product);
-console.log(productList,'productList')
+const test = useSelector((state) => state.product)
+console.log(test,'productList')
   useEffect(() => {
     dispatch(productActions.getProductList());
   }, []);
