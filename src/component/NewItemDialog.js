@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../utils/CloudinaryUploadWidget";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
 import { productActions } from "../action/productAction";
 import { CATEGORY, STATUS, SIZE } from "../constants/product.constants";
 import "../style/adminProduct.style.css";
 import * as types from "../constants/product.constants";
 import { commonUiActions } from "../action/commonUiAction";
-
+const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 const InitialFormData = {
   name: "",
   sku: "",
@@ -27,22 +30,48 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const [stock, setStock] = useState([]);
   const dispatch = useDispatch();
   const [stockError, setStockError] = useState(false);
-  console.log(stock,'stock')
+
+  const [cloudName] = useState(CLOUDINARY_CLOUD_NAME);
+  const [uploadPreset] = useState(CLOUDINARY_PRESET);
+
+  const [uwConfig] = useState({
+    cloudName,
+    uploadPreset,
+  });
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName,
+    },
+  });
+
   const handleClose = () => {
-    //모든걸 초기화시키고;
-    // 다이얼로그 닫아주기
+   
+    setShowDialog(false);
+    
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(formData,'formData')
     //재고를 입력했는지 확인, 아니면 에러
+    if(stock.length ===0){
+      return setStockError(true)
+    }
     // 재고를 배열에서 객체로 바꿔주기
+    const totalStock = stock.reduce((total,item)=>{
+      return {...total,[item[0]]:parseInt(item[1])}
+    },{})
+    console.log(totalStock,'totalStock')
     // [['M',2]] 에서 {M:2}로
     if (mode === "new") {
       //새 상품 만들기
+      dispatch(productActions.createProduct({...formData,stock:totalStock}))
+      setShowDialog(false)
     } else {
       // 상품 수정하기
     }
+    setShowDialog(false)
   };
 
   const handleChange = (event) => {
@@ -97,6 +126,9 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const uploadImage = (url) => {
     //이미지 업로드
+    setFormData({
+      ...formData,image:url
+    })
   };
 
   useEffect(() => {
@@ -220,15 +252,14 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           </div>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="Image" required>
+        <Form.Group className='mb-3' controlId='Image' required>
           <Form.Label>Image</Form.Label>
-          <CloudinaryUploadWidget uploadImage={uploadImage} />
-
+          <CloudinaryUploadWidget uwConfig={uwConfig} setFormData={setFormData} />
           <img
-            id="uploadedimage"
+            id='uploadedimage'
             src={formData.image}
-            className="upload-image mt-2"
-            alt="uploadedimage"
+            className='upload-image mt-2'
+            alt='uploadedimage'
           ></img>
         </Form.Group>
 

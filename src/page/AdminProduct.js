@@ -19,6 +19,12 @@ const AdminProduct = () => {
     page: query.get("page") || 1,
     name: query.get("name") || "",
   }); //검색 조건들을 저장하는 객체
+const {productList} = useSelector((state) => state.product);
+console.log(productList,'productList')
+  useEffect(() => {
+    dispatch(productActions.getProductList());
+  }, []);
+
 
   const [mode, setMode] = useState("new");
   const tableHeader = [
@@ -75,7 +81,7 @@ const AdminProduct = () => {
 
         <ProductTable
           header={tableHeader}
-          data=""
+          data={productList}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
         />
@@ -105,7 +111,7 @@ const AdminProduct = () => {
       <NewItemDialog
         mode={mode}
         showDialog={showDialog}
-        setShowDialog={showDialog}
+        setShowDialog={ setShowDialog}
       />
     </div>
   );

@@ -8,8 +8,11 @@ import { commonUiActions } from "../action/commonUiAction";
 
 const ProductAll = () => {
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.product.error);
+  const error= useSelector((state) => state.product);
+
   // 처음 로딩하면 상품리스트 불러오기
+
+
 
   return (
     <Container>

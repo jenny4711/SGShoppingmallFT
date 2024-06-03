@@ -22,7 +22,7 @@ const loginWithEmail =
       dispatch(userActionss.loginRequest());
       sessionStorage.removeItem("token");
       const response = await api.post(`/auth/login`, { email, password });
-     
+     console.log(response.data,'resLoginWithEmail')
       if (response.status !== 200) throw new Error(response.error);
       sessionStorage.setItem("token", response.data.data.token);
 
