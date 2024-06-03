@@ -13,7 +13,18 @@ const AppLayout = ({ children }) => {
   const dispatch = useDispatch();
   // const user = null; // 로그인 기능 만들고 지우기
 
+
+
+
   const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(userActions.startCheck());
+  }, []);
+
+
+
+
 
   
   useEffect(() => {
