@@ -44,7 +44,7 @@ const productSlice = createSlice({
     },
     productCreateFail(state,action){
       state.loading=false;
-      state.error=action.payload.error;
+      state.error=action.payload;
 
     },
     productGetFail(state,action){
@@ -53,7 +53,7 @@ const productSlice = createSlice({
     },
     productEditFail(state,action){
       state.loading=false;
-      state.error=action.payload.error;
+      state.error=action.payload;
     },
     setSelectedProduct(state,action){
       state.selectedProduct=action.payload
