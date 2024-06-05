@@ -21,7 +21,7 @@ const AdminProduct = () => {
   }); //검색 조건들을 저장하는 객체
 const {productList,totalPageNum} = useSelector((state) => state.product);
 const test = useSelector((state) => state.product.productAll)
-console.log(test?.data,'productList')
+
   useEffect(() => {
     dispatch(productActions.getProductList({...searchQuery}))
   }, [query]);
@@ -90,7 +90,7 @@ console.log(test?.data,'productList')
 
         <ProductTable
           header={tableHeader}
-          data={test?.data}
+          data={productList}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
         />
