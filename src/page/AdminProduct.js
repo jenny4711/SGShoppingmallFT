@@ -48,7 +48,7 @@ console.log(productList,'productList')
     }
     const params = new URLSearchParams(searchQuery);
     const query = params.toString();
-    navigate(`?${query}`);
+    navigate("?" + query);
   }, [searchQuery]);
 
   const deleteItem = (id) => {
