@@ -55,7 +55,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     event.preventDefault();
     console.log(formData,'formData')
     //재고를 입력했는지 확인, 아니면 에러
-    if(stock.length ===0){
+    if(stock?.length ===0){
       return setStockError(true)
     }
     // 재고를 배열에서 객체로 바꿔주기
