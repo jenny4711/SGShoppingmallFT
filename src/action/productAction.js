@@ -3,14 +3,15 @@ import * as types from "../constants/product.constants";
 import { toast } from "react-toastify";
 import { commonUiActions } from "./commonUiAction";
 import { productActions as productActionss } from "../reducer/productReducer";
-const getProductList = () => async (dispatch) => {
+const getProductList = (query) => async (dispatch) => {
   try {
     dispatch(productActionss.productGetRequest());
-    const response = await api.get("/product", );
+    const response = await api.get("/product",{params:{...query}} );
 
     if (response.status !== 200) throw new Error(response.error);
-    console.log(response.data.products,'actionData!!!')
-    dispatch(productActionss.productGetSuccess(response.data.products));
+    console.log(response.data.totalPageNum,'resData')
+    dispatch(productActionss.productTotal(response.data));
+    dispatch(productActionss.productGetSuccess(response.data.data));
   } catch (error) {
     dispatch(productActionss.productGetFail(error.error));
 

@@ -5,9 +5,10 @@ const initialState = {
   selectedProduct: null,
   loading: false,
   error: "",
-  totalPageNum: 1,
+  totalPageNum:1,
   detailProduct:null,
   byCategory :[],
+  productAll:null,
 };
 
 const productSlice = createSlice({
@@ -35,7 +36,7 @@ const productSlice = createSlice({
       state.loading=false;
       state.error="";
       state.productList=action.payload;
-      state.totalPageNum=action.payload.totalPageNum
+      
     },
     productGetByCategorySuccess(state,action){
       state.loading=false;
@@ -61,7 +62,12 @@ const productSlice = createSlice({
       state.loading=false;
       state.error="";
       state.productDetail=action.payload;
+    },
+    productTotal(state,action){
+      state.productAll=action.payload
+      state.totalPageNum=action.payload.totalPageNum
     }
+  
 
   }
 })

@@ -19,12 +19,12 @@ const AdminProduct = () => {
     page: query.get("page") || 1,
     name: query.get("name") || "",
   }); //검색 조건들을 저장하는 객체
-const {productList} = useSelector((state) => state.product);
+const {productList,totalPageNum} = useSelector((state) => state.product);
 const test = useSelector((state) => state.product)
 console.log(test,'productList')
   useEffect(() => {
-    dispatch(productActions.getProductList());
-  }, []);
+    dispatch(productActions.getProductList({...searchQuery}))
+  }, [query]);
 
 
   const [mode, setMode] = useState("new");
@@ -43,6 +43,12 @@ console.log(test,'productList')
 
   useEffect(() => {
     //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
+    if(searchQuery.name === ""){
+      delete searchQuery.name;
+    }
+    const params = new URLSearchParams(searchQuery);
+    const query = params.toString();
+    navigate(`?${query}`);
   }, [searchQuery]);
 
   const deleteItem = (id) => {
@@ -62,6 +68,8 @@ console.log(test,'productList')
   };
 
   const handlePageClick = ({ selected }) => {
+    console.log(selected+1, "selected");
+    setSearchQuery({ ...searchQuery, page: selected + 1 });
     //  쿼리에 페이지값 바꿔주기
   };
 
@@ -90,8 +98,8 @@ console.log(test,'productList')
           nextLabel="next >"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
-          pageCount={100}
-          forcePage={2} // 1페이지면 2임 여긴 한개씩 +1 해야함
+          pageCount={totalPageNum}
+          forcePage={searchQuery.page-1} // 1페이지면 2임 여긴 한개씩 +1 해야함
           previousLabel="< previous"
           renderOnZeroPageCount={null}
           pageClassName="page-item"
