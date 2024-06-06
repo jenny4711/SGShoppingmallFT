@@ -16,6 +16,7 @@ const AdminProduct = () => {
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);
+  const [deleted,setDeleted]=useState(false)
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     name: query.get("name") || "",
@@ -53,10 +54,7 @@ const test = useSelector((state) => state.product.productAll)
   }, [searchQuery]);
 
   const deleteItem = (id) => {
-    // const updatedIsDeleted = {
-    //   ...selectedProduct,
-    //   IsDeleted: true,
-    // };
+   
     dispatch(productActions.deleteProduct(id))
     //아이템 삭제하가ㅣ
   };
