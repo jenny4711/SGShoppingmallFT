@@ -15,8 +15,14 @@ const ProductDetail = () => {
   const [size, setSize] = useState("");
   const { id } = useParams();
   const [sizeError, setSizeError] = useState(false);
-
+const{ productDetail }= useSelector((state) => state.product);
+console.log(productDetail,'productDetail')
   const navigate = useNavigate();
+
+
+  useEffect(()=>{
+    dispatch(productActions.getProductDetail(id))
+  },[])
 
   const addItemToCart = () => {
     //사이즈를 아직 선택안했다면 에러
@@ -40,15 +46,15 @@ const ProductDetail = () => {
       <Row>
         <Col sm={6}>
           <img
-            src="https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F3a%2F04%2F3a04ededbfa6a7b535e0ffa30474853fc95d2e81.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/fullscreen]"
+            src={productDetail?.image}
             className="w-100"
             alt="image"
           />
         </Col>
         <Col className="product-info-area" sm={6}>
-          <div className="product-info">리넨셔츠</div>
-          <div className="product-info">₩ 45,000</div>
-          <div className="product-info">샘플설명</div>
+          <div style={{fontWeight:'bold'}} className="product-info">{productDetail?.name}</div>
+          <div className="product-info">$ {productDetail?.price}</div>
+          <div style={{fontSize:'13px'}} className="product-info">{productDetail?.description}</div>
 
           <Dropdown
             className="drop-down size-drop-down"
@@ -66,7 +72,21 @@ const ProductDetail = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="size-drop-down">
-              <Dropdown.Item>M</Dropdown.Item>
+            {productDetail &&
+              productDetail.stock &&
+              Object.keys(productDetail.stock).length > 0 ? (
+             
+                Object.keys(productDetail.stock).map((item, idx) => (
+
+             
+                  <Dropdown.Item key={idx} eventKey={item}>
+                    {item}-{productDetail.stock[item] !== null?productDetail.stock[item]:0 }
+                
+                  </Dropdown.Item>
+                ))
+              ) : (
+                <Dropdown.Item disabled={true}>사이즈 없음</Dropdown.Item>
+              ) }
             </Dropdown.Menu>
           </Dropdown>
           <div className="warning-message">

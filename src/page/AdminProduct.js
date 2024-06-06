@@ -3,6 +3,7 @@ import { Container, Button } from "react-bootstrap";
 import SearchBox from "../component/SearchBox";
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
+import { productActions as  productActionss } from "../reducer/productReducer";
 import NewItemDialog from "../component/NewItemDialog";
 import * as types from "../constants/product.constants";
 import ReactPaginate from "react-paginate";
@@ -52,12 +53,20 @@ const test = useSelector((state) => state.product.productAll)
   }, [searchQuery]);
 
   const deleteItem = (id) => {
+    // const updatedIsDeleted = {
+    //   ...selectedProduct,
+    //   IsDeleted: true,
+    // };
+    dispatch(productActions.deleteProduct(id))
     //아이템 삭제하가ㅣ
   };
 
   const openEditForm = (product) => {
+    setMode("edit");
     //edit모드로 설정하고
     // 아이템 수정다이얼로그 열어주기
+    dispatch(productActionss.setSelectedProduct(product));
+    setShowDialog(true);
   };
 
   const handleClickNewItem = () => {
