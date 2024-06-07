@@ -12,7 +12,7 @@ const ProductAll = () => {
   const {error,productList}= useSelector((state) => state.product);
   const [showProduct,setShowProduct]=useState([])
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+
   const searchParamsItem = new URLSearchParams(location.search);
   const [query, setQuery] = useSearchParams(); 
  
