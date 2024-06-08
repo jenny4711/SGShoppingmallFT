@@ -54,7 +54,7 @@ const CartProductCard = ({ item }) => {
             <Form.Select
               onChange={(event) =>  handleQtyChange(item._id, event.target.value)}
               required
-              defaultValue={1}
+              defaultValue={item.qty}
               className="qty-dropdown"
             >
               <option value={1}>1</option>
