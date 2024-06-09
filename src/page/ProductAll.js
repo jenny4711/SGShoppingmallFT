@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
 import { commonUiActions } from "../action/commonUiAction";
 import { useLocation } from "react-router-dom";
-
+import { cartActions } from '../action/cartAction';
 const ProductAll = () => {
   const dispatch = useDispatch();
   const {error,productList}= useSelector((state) => state.product);
@@ -25,7 +25,9 @@ const ProductAll = () => {
 useEffect(()=>{
   dispatch(productActions.getProductList())
 },[])
-
+useEffect(()=>{
+  dispatch(cartActions.getCartQty())
+},[])
 
 
 //상품리스트가 바뀌면 검색어에 따라 필터링해서 보여주기

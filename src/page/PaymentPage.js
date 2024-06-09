@@ -12,7 +12,12 @@ import { cc_expires_format } from "../utils/number";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
-
+  const { cartList, totalPrice, cartUserInfo} = useSelector(
+    (state) => state.cart
+  );
+  const { orderNum, error } = useSelector((state) => state.order);
+  const {address}=useSelector((state)=>state.user.user)
+  const [addUserInfo, setAddUserInfo] = useState(false);
   const [cardValue, setCardValue] = useState({
     cvc: "",
     expiry: "",
@@ -22,6 +27,11 @@ const PaymentPage = () => {
   });
   const navigate = useNavigate();
   const [firstLoading, setFirstLoading] = useState(true);
+
+
+ 
+  const hasAddress= address&& address !==undefined
+  console.log(hasAddress,'address')
   const [shipInfo, setShipInfo] = useState({
     firstName: "",
     lastName: "",
@@ -31,42 +41,87 @@ const PaymentPage = () => {
     zip: "",
   });
 
-  //맨처음 페이지 로딩할때는 넘어가고  오더번호를 받으면 성공페이지로 넘어가기
+  // ...
+
+  useEffect(() => {
+    if (firstLoading) {
+      setFirstLoading(false);
+    } else {
+      if (orderNum !== "") {
+        navigate("/payment/success");
+      }
+    }
+  }, [orderNum]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //오더 생성하가ㅣ
+    const { firstName, lastName, contact, address, city, zip } = shipInfo;
+
+    const data = {
+      totalPrice,
+     
+      shipTo: { address, city, zip },
+      contact: { firstName, lastName, contact },
+      orderList: cartList.map((item) => {
+        return {
+          productId: item.productId._id,
+          price: item.productId.price,
+          qty: item.qty,
+          size: item.size,
+        };
+      }),
+    };
+
+    
+    
+      dispatch(orderActions.createOrder(data, navigate));
+    
   };
 
   const handleFormChange = (event) => {
-    //shipInfo에 값 넣어주기
+    const { name, value } = event.target;
+    setShipInfo({ ...shipInfo, [name]: value });
   };
 
   const handlePaymentInfoChange = (event) => {
-    //카드정보 넣어주기
+    const { name, value } = event.target;
+    if (name === "expiry") {
+      let newValue = cc_expires_format(value);
+      setCardValue({ ...cardValue, [name]: newValue });
+    }
+    setCardValue({ ...cardValue, [name]: value });
+    return;
   };
 
   const handleInputFocus = (e) => {
     setCardValue({ ...cardValue, focus: e.target.name });
   };
-  //카트에 아이템이 없다면 다시 카트페이지로 돌아가기 (결제할 아이템이 없으니 결제페이지로 가면 안됌)
+
+  if (cartList && cartList.length === 0) {
+    navigate("/cart");
+  }
+  console.log(addUserInfo);
   return (
     <Container>
       <Row>
         <Col lg={7}>
           <div>
             <h2 className="mb-2">배송 주소</h2>
+         
+            
             <div>
               <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="lastName">
                     <Form.Label>성</Form.Label>
-                    <Form.Control
+                   <Form.Control
                       type="text"
                       onChange={handleFormChange}
-                      required
+                      required={!addUserInfo}
+                      className={addUserInfo?"none":""}
                       name="lastName"
                     />
+                                   
                   </Form.Group>
 
                   <Form.Group as={Col} controlId="firstName">
@@ -74,9 +129,14 @@ const PaymentPage = () => {
                     <Form.Control
                       type="text"
                       onChange={handleFormChange}
-                      required
+                      className={addUserInfo?"none":""}
+                      required={!addUserInfo}
                       name="firstName"
                     />
+                 
+
+
+
                   </Form.Group>
                 </Row>
 
@@ -85,9 +145,13 @@ const PaymentPage = () => {
                   <Form.Control
                     placeholder="010-xxx-xxxxx"
                     onChange={handleFormChange}
-                    required
+                    className={addUserInfo?"none":""}
+                    required={!addUserInfo}
                     name="contact"
                   />
+                
+
+
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formGridAddress2">
@@ -95,35 +159,46 @@ const PaymentPage = () => {
                   <Form.Control
                     placeholder="Apartment, studio, or floor"
                     onChange={handleFormChange}
-                    required
+                    className={addUserInfo?"none":""}
+                    required={!addUserInfo}
                     name="address"
                   />
+                 
                 </Form.Group>
 
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formGridCity">
                     <Form.Label>City</Form.Label>
                     <Form.Control
+                     className={addUserInfo?"none":""}
                       onChange={handleFormChange}
-                      required
+                      required={!addUserInfo}
                       name="city"
                     />
+                   
                   </Form.Group>
 
                   <Form.Group as={Col} controlId="formGridZip">
                     <Form.Label>Zip</Form.Label>
                     <Form.Control
+                     className={addUserInfo?"none":""}
                       onChange={handleFormChange}
-                      required
+                      required={!addUserInfo}
                       name="zip"
                     />
+                  
                   </Form.Group>
                 </Row>
                 <div className="mobile-receipt-area">
-                  {/* <OrderReceipt /> */}
+                  <OrderReceipt cartList={cartList} totalPrice={totalPrice}  />
                 </div>
                 <div>
                   <h2 className="payment-title">결제 정보</h2>
+                  <PaymentForm
+                    cardValue={cardValue}
+                    handleInputFocus={handleInputFocus}
+                    handlePaymentInfoChange={handlePaymentInfoChange}
+                  />
                 </div>
 
                 <Button
@@ -138,7 +213,7 @@ const PaymentPage = () => {
           </div>
         </Col>
         <Col lg={5} className="receipt-area">
-          {/* <OrderReceipt /> */}
+          <OrderReceipt cartList={cartList} totalPrice={totalPrice}  />
         </Col>
       </Row>
     </Container>

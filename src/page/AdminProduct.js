@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { commonUiActions } from "../action/commonUiAction";
 import ProductTable from "../component/ProductTable";
+import { cartActions } from '../action/cartAction';
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ const test = useSelector((state) => state.product.productAll)
   useEffect(() => {
     dispatch(productActions.getProductList({...searchQuery}))
   }, [query]);
+
+  
 
 
   const [mode, setMode] = useState("new");

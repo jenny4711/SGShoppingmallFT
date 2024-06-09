@@ -9,7 +9,8 @@ const getProductList = (query) => async (dispatch) => {
     const response = await api.get("/product",{params:{...query}} );
 
     if (response.status !== 200) throw new Error(response.error);
-    console.log(response.data,'resData')
+    console.log(response.data.data,'resData')
+  
     dispatch(productActionss.productTotal(response.data));
     dispatch(productActionss.productGetSuccess(response.data.data));
   } catch (error) {

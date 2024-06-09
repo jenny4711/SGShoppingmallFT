@@ -26,14 +26,16 @@ console.log(user,'user')
   },[])
 
   const addItemToCart = () => {
-    if(size === ""){
-      setSizeError(true)
+    if (size === "") {
+      setSizeError(true);
+      return;
     }
-    //사이즈를 아직 선택안했다면 에러
-if(!user)navigate('/login')
-    // 아직 로그인을 안한유저라면 로그인페이지로
-  dispatch(cartActions.addToCart({id,size}))
-    // 카트에 아이템 추가하기
+
+    if (user === null) {
+      navigate("/login");
+    }
+
+    dispatch(cartActions.addToCart({ id, size }));
   };
   const selectSize = (value) => {
     if(sizeError){
@@ -48,6 +50,7 @@ if(!user)navigate('/login')
   //에러가 있으면 에러메세지 보여주기
 
   useEffect(() => {
+    dispatch(productActions.getProductDetail(id));
     //상품 디테일 정보 가져오기
   }, [id]);
 
