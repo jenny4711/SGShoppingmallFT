@@ -31,7 +31,7 @@ console.log(user,'user')
       return;
     }
 
-    if (user === null) {
+    if (!user) {
       navigate("/login");
     }
 

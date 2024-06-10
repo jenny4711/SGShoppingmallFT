@@ -32,7 +32,7 @@ const getProductDetail = (id) => async (dispatch) => {
    
   }catch(error){
     dispatch(productActionss.productGetFail(error.error));
-    dispatch(commonUiActions.showToastMessage(error.error, "error"));
+    dispatch(commonUiActions.showToastMessage("상품생성 정보를 확인후 다시 시도해주세요!", "error"));
   }
 };
 

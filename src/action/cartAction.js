@@ -2,6 +2,8 @@ import api from "../utils/api";
 import * as types from "../constants/cart.constants";
 import { commonUiActions } from "../action/commonUiAction";
 import { cartActionss } from "../reducer/cartReducer";
+
+import { ToastContainer, toast } from 'react-toastify';
 const addToCart =
   ({ id, size }) =>
   async (dispatch) => {
@@ -16,9 +18,20 @@ const addToCart =
 
       dispatch(commonUiActions.showToastMessage("상품추가 완료", "success"));
     } catch (error) {
-      dispatch(cartActionss.addToCartFail(error.error));
+      dispatch(cartActionss.addToCartFail(error.message));
+      console.log(error,'error')
+toast(error.error,{
+  position: "top-right",
+autoClose: 5000,
+hideProgressBar: false,
+closeOnClick: true,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
 
-      dispatch(commonUiActions.showToastMessage("상품추가 실패", "fail"));
+})
+      // dispatch(commonUiActions.showToastMessage("상품추가 실패", "fail"));
     }
   };
 
