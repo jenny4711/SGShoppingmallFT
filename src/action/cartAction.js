@@ -24,11 +24,14 @@ toast(error.error,{
   position: "top-right",
 autoClose: 5000,
 hideProgressBar: false,
+newestOnTop:false,
 closeOnClick: true,
-pauseOnHover: true,
+rtl:false,
+pauseOnFocusLoss: true,
 draggable: true,
-progress: undefined,
+pauseOnHover: true,
 theme: "light",
+
 
 })
       // dispatch(commonUiActions.showToastMessage("상품추가 실패", "fail"));
