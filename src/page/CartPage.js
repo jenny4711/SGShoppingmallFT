@@ -15,7 +15,7 @@ const CartPage = () => {
   );
  
 
-  
+  console.log(totalPrice,'totalPRice')
 
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const CartPage = () => {
           )}
         </Col>
 
-        <Col xs={12} md={5}>
+        <Col xs={12} md={5}  className={totalPrice ==='0.00'?'none':''}>
         <OrderReceipt
             cartList={cartList}
             totalPrice={totalPrice}
