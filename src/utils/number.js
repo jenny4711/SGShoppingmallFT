@@ -26,3 +26,9 @@ export const cc_expires_format = (string) => {
       "$1/$2" // To handle 113 > 11/3
     );
 };
+
+
+export const showCreateAt=(date)=>{
+  const dateObj = new Date(date);
+  return dateObj.toLocaleDateString();
+}

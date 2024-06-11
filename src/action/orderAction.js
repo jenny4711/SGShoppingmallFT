@@ -60,9 +60,24 @@ const updateOrder = (id, status) => async (dispatch) => {
   }
 };
 
+
+const selectOrder =(order)=>async(dispatch)=>{
+  try{
+    
+    dispatch(orderActionss.setSelectedOrder(order));
+
+
+
+  }catch(error){
+    dispatch(orderActionss.AllFail(error.error));
+    dispatch(commonUiActions.showToastMessage(error.error, "error"));
+  }
+}
+
 export const orderActions = {
   createOrder,
   getOrder,
   getOrderList,
   updateOrder,
+  selectOrder,
 };

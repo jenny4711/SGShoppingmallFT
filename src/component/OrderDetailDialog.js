@@ -11,17 +11,20 @@ const OrderDetailDialog = ({ open, handleClose }) => {
   const selectedOrder = useSelector((state) => state.order.selectedOrder);
   const [orderStatus, setOrderStatus] = useState(selectedOrder.status);
   const dispatch = useDispatch();
-
+console.log(selectedOrder,'open')
   const handleStatusChange = (event) => {
     setOrderStatus(event.target.value);
   };
   const submitStatus = () => {
     dispatch(orderActions.updateOrder(selectedOrder._id, orderStatus));
+    dispatch(orderActions.getOrderList());
     handleClose();
   };
 
   if (!selectedOrder) {
-    return <></>;
+    return <>
+      
+    </>;
   }
   return (
     <Modal show={open} onHide={handleClose}>

@@ -48,7 +48,7 @@ const AdminOrderPage = () => {
 
   const openEditForm = (order) => {
     setOpen(true);
-    dispatch({ type: types.SET_SELECTED_ORDER, payload: order });
+    dispatch(orderActions.selectOrder(order))
   };
 
   const handlePageClick = ({ selected }) => {
